@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    {% include 'partials/messages.html' %}
+    <div class="card rounded-sm shadow-sm mb-3">
+        <div class="card-header">
+            <h3>Ordered Products</h3>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <th>Product</th>
+                    <th>Amount</th>
+                    <th>Unit Price</th>
+                    <th>Price</th>
+                </thead>
+                <tbody>
+                    {% for item in order_items %}
+                    <tr>
+                        <td><a href="#">{{item.product_name}}</a></td>
+                        <td>{{item.amount}}</td>
+                        <td>{{item.price}} {{currency.symbol}}</td>
+                        <td><a id="total{{item.cart_id}}">{{item.total_price}}</a><a> {{currency.symbol}}</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card rounded-sm shadow-sm mb-3">
+        <div class="card-header">
+            <h3>User Information</h3>
+        </div>
+        <div class="card-body">
+            <div class="card rounded-sm p-3">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input disabled type="email" value="{{order.email}}" class="form-control rounded-sm" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="First Name">First Name</label>
+                    <input disabled type="text" value="{{order.first_name}}" class="form-control rounded-sm" name="first_name">
+                </div>
+                <div class="form-group">
+                    <label for="Last Name">Last Name</label>
+                    <input disabled type="text" value="{{order.last_name}}" class="form-control rounded-sm" name="last_name">
+                </div>
+            </div>
+            <p class="lead mt-3">Address</p>
+            <div class="card rounded-sm">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <input disabled type="text" value="{{country.name}}" class="form-control rounded-sm" name="country">
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input disabled type="text" value="{{order.city}}" class="form-control rounded-sm" name="city">
+                    </div>
+                    <div class="form-group">
+                        <label for="street">Street</label>
+                        <input disabled type="text" value="{{order.street}}" class="form-control rounded-sm" name="street">
+                    </div>
+                    <div class="form-group">
+                        <label for="house_no">House Number</label>
+                        <input disabled type="text" value="{{order.house_no}}" class="form-control rounded-sm" name="house_no">
+                    </div>
+                    <div class="form-group">
+                        <label for="zipcode">Zip Code</label>
+                        <input disabled type="text" value="{{order.zipcode}}" class="form-control rounded-sm" name="zipcode">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <div class="card flex-fill w-100 shadow-sm rounded-sm">
+                <div class="card-header">
+                    <h3>Payment & Shipping</h3>
+                </div>
+                <div class="card-body">
+                    <li class="list-group item">
+                        <div class="card rounded-sm mb-3">
+                            <div class="card-body ml-3">
+                                Payment: {{order.payment}}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group item">
+                        <div class="card rounded-sm mb-3">
+                            <div class="card-body ml-3">
+                                Shipping: {{order.shipping}}
+                            </div>
+                        </div>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <div class="card flex-fill w-100 shadow-sm rounded-sm">
+                <div class="card-header">
+                    <h3>Summary</h3>
+                </div>
+                <div class="card-body">
+                    <li class="list-group item">Products: {{products_price}} {{currency.symbol}}</li>
+                    <li class="list-group item">Payment: {{order.payment_price}} {{currency.symbol}}</li>
+                    <li class="list-group item">Shipping: {{order.shipping_price}} {{currency.symbol}}</li>
+                    <hr>
+                    <li class="list-group item">Total: {{order.total_price}} {{currency.symbol}}</li>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if not order.status.name in '(Completed, Cancelled)'  %}
+    <div class="row row-cols-2 px-2">
+        <div class="col">
+            <form action="{% url 'order_cancel' order.order_id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Cancel Order" class="btn btn-block btn-danger rounded-sm btn-lg">
+            </form>
+        </div>
+        <div class="col">
+            <form action="{% url 'order_confirm' order.order_id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Confirm Order" class="btn btn-block btn-success rounded-sm btn-lg">
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

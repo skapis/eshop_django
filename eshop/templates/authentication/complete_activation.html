@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        {% include 'partials/messages.html' %}
+        <form action="{% url 'activate' uidb64 token %}" method="post">
+            {% csrf_token %}
+            <div class="card p-3 rounded-sm shadow-sm mb-3">
+                <div class="form-group">
+                    <label for="first_name">First Name *</label>
+                    <input type="text" name="first_name" class="form-control rounded-sm">
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name *</label>
+                    <input type="text" name="last_name" class="form-control rounded-sm">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender *</label>
+                    <select name="gender" class="form-control rounded-sm">
+                        {% for g in gender %}
+                            <option name="gender">{{g.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Date of birth *</label>
+                    <input type="date" name="dob" class="form-control rounded-sm">
+                </div>
+            </div>
+            <div class="card p-3 rounded-sm shadow-sm mb-3">
+                <p class="lead"><strong>Address</strong></p>
+                <div class="form-group">
+                    <label for="country">Country *</label>
+                    <select name="country" class="form-control rounded-sm">
+                        {% for country in countries %}
+                            <option value="{{country.code}}">{{country.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="city">City *</label>
+                    <input type="text" name="city" class="form-control rounded-sm">
+                </div>
+                <div class="form-group">
+                    <label for="street">Street</label>
+                    <input type="text" name="street" class="form-control rounded-sm">
+                </div>
+                <div class="form-group">
+                    <label for="house_no">House number *</label>
+                    <input type="text" name="house_no" class="form-control rounded-sm">
+                </div>
+                <div class="form-group">
+                    <label for="zipcode">Zip Code *</label>
+                    <input type="text" name="zipcode" class="form-control rounded-sm">
+                </div>
+            </div>
+            <p class="text-muted">* required fields</p>
+            <input type="submit" value="Activate account" class="btn btn-block btn-primary rounded-sm register-btn">
+        </form>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+{% endblock %}

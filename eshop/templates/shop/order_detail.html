@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    {% include 'partials/messages.html' %}
+    <div class="card rounded-sm shadow-sm mb-3">
+        <div class="card-header">
+            <h3>Order Information</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                <p class="mb-0">Order ID</p>
+                </div>
+                <div class="col-sm-9">
+                <p class="text-muted mb-0">{{order.order_id}}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                <p class="mb-0">Order Date</p>
+                </div>
+                <div class="col-sm-9">
+                <p class="text-muted mb-0">{{order.timestamp}}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                <p class="mb-0">Shipping Address</p>
+                </div>
+                <div class="col-sm-9">
+                <p class="text-muted mb-0">{{order.street}} {{order.house_no}}, {{order.zipcode}} {{order.city}}, {{country.name}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card rounded-sm shadow-sm mb-3">
+        <div class="card-header">
+            <h3>Ordered Products</h3>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <th>Product</th>
+                    <th>Amount</th>
+                    <th>Unit Price</th>
+                    <th>Price</th>
+                </thead>
+                <tbody>
+                    {% for item in order_items %}
+                    <tr>
+                        <td><a href="#">{{item.product_name}}</a></td>
+                        <td>{{item.amount}}</td>
+                        <td>{{item.price}} {{currency.symbol}}</td>
+                        <td><a id="total{{item.cart_id}}">{{item.total_price}}</a><a> {{currency.symbol}}</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <div class="card flex-fill w-100 shadow-sm rounded-sm">
+                <div class="card-header">
+                    <h3>Payment & Shipping</h3>
+                </div>
+                <div class="card-body">
+                    <li class="list-group item">
+                        <div class="card rounded-sm mb-3">
+                            <div class="card-body ml-3">
+                                Payment: {{order.payment}}
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group item">
+                        <div class="card rounded-sm mb-3">
+                            <div class="card-body ml-3">
+                                Shipping: {{order.shipping}}
+                            </div>
+                        </div>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col">
+            <div class="card flex-fill w-100 shadow-sm rounded-sm">
+                <div class="card-header">
+                    <h3>Summary</h3>
+                </div>
+                <div class="card-body">
+                    <li class="list-group item">Products: {{products_price}} {{currency.symbol}}</li>
+                    <li class="list-group item">Payment: {{order.payment_price}} {{currency.symbol}}</li>
+                    <li class="list-group item">Shipping: {{order.shipping_price}} {{currency.symbol}}</li>
+                    <hr>
+                    <li class="list-group item">Total: {{order.total_price}} {{currency.symbol}}</li>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

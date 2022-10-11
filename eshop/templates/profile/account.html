@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% include 'partials/messages.html' %}
+    <div class="card py-3 rounded-sm shadow-sm">
+        <div class="card-title px-3">
+            <a class="h3 mr-3">Account information</a>
+            <a class="bi bi-pencil" id="edit_acc"></a>
+        </div>
+        <div class="card-body" id="account_info">
+            <div class="row">
+                <div class="col-sm-3">
+                    <p class="mb-0">Username</p>
+                </div>
+                <div class="col-sm-9">
+                    <p class="text-muted mb-0">{{user.username}}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                    <p class="mb-0">E-mail</p>
+                </div>
+                <div class="col-sm-9">
+                    <p class="text-muted mb-0">{{user.email}}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                    <p class="mb-0">First Name</p>
+                </div>
+                <div class="col-sm-9">
+                    <p class="text-muted mb-0">{{profile.first_name}}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                    <p class="mb-0">Last Name</p>
+                </div>
+                <div class="col-sm-9">
+                    <p class="text-muted mb-0">{{profile.last_name}}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-3">
+                    <p class="mb-0">Birth Date</p>
+                </div>
+                <div class="col-sm-9">
+                    <p class="text-muted mb-0">{{profile.date_of_birth}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body" id="account_info_edit" style="display: none;">
+            <form action="{% url 'edit_account' %}" method="post" class="mb-0">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Username *</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control rounded-sm" name="username" value="{{user.username}}">
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">E-mail</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <input disabled type="email" class="form-control rounded-sm" name="email" value="{{user.email}}">
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">First Name *</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control rounded-sm" name="first_name" value="{{profile.first_name}}">
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Last Name *</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control rounded-sm" name="last_name" value="{{profile.last_name}}">
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Birth Date *</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="date" class="form-control rounded-sm" name="dob" value="{{profile.date_of_birth|date:'Y-m-d'}}">
+                    </div>
+                </div>
+                <div class="row px-3 mt-3 justify-content-end">
+                    <input type="submit" value="Save" class="btn btn-primary rounded-sm px-4">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card py-3 mt-3 rounded-sm shadow-sm">
+        <div class="card-title px-3">
+            <a class="h3 mr-2">Address</a>
+            <a href="{% url 'add_address' %}" class="rounded bi bi-plus-circle h5"></a>
+        </div>
+        <div class="card-body">
+            {% for address in addresses %}
+                <div class="row" id="addressInfo">
+                    <div class="col-sm-3">
+                    <a class="mb-0">
+                        {% if address.is_primary %}
+                            Primary address
+                        {% else %}
+                            Secondary address
+                        {% endif %}
+                    </a> 
+                        <a class="bi bi-pencil ml-1 editAddress" id="{{address.address_id}}"></a>
+                    </div>
+                    <div class="col-sm-7">
+                        <p class="text-muted mb-0">{{address.street}} {{address.house_no}}, {{address.zipcode}} {{address.city}}, {{address.country.name}}</p>
+                    </div>
+                    {% if not address.is_primary %}
+                        <div class="col-sm-1">
+                            <form action="{% url 'change_primary' address.address_id %}" method="post" class="mb-0">
+                                {% csrf_token %}
+                                <button class="btn btn-outline-primary btn-sm rounded-sm">Set as primary</button>
+                            </form>
+                        </div>
+                        <div class="col-sm-1">
+                            <form action="{% url 'delete_address' address.address_id %}" method="post" class="mb-0">
+                                {% csrf_token %}
+                                <button class="border-0 btn-transition btn btn-outline-danger bi bi-trash px-3 rounded-sm"></button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card rounded-sm my-3" id="editblock_{{address.address_id}}" style="display: none;">
+                    <form action="{% url 'edit_address' address.address_id %}" method="post">
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <div class="row row-cols-3">
+                                <div class="form-group px-3">
+                                    <label for="country" class="font-weight-bold">Country</label>
+                                    <select name="country" class="form-control rounded-sm">
+                                        {% for country in countries %}
+                                            {% if address.country.name == country.name %}
+                                                <option selected value="{{country.code}}">{{country.name}}</option>
+                                            {% else %}
+                                                <option value="{{country.code}}">{{country.name}}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group px-3">
+                                    <label for="city" class="font-weight-bold">City</label>
+                                    <input type="text" name="city" class="form-control rounded-sm" value="{{address.city}}">
+                                </div>
+                                <div class="form-group px-3">
+                                    <label for="street" class="font-weight-bold">Street</label>
+                                    <input type="text" name="street" class="form-control rounded-sm" value="{{address.street}}">
+                                </div>
+                                <div class="form-group px-3">
+                                    <label for="house_no" class="font-weight-bold">House Number</label>
+                                    <input type="text" name="house_no" class="form-control rounded-sm" value="{{address.house_no}}">
+                                </div>
+                                <div class="form-group px-3">
+                                    <label for="zipcode" class="font-weight-bold">Zip Code</label>
+                                    <input type="text" name="zipcode" class="form-control rounded-sm" value="{{address.zipcode}}">
+                                </div>
+                            </div>
+                            <div class="row px-3 mt-3 justify-content-end">
+                                <input type="submit" value="Save" class="btn btn-primary rounded-sm px-4">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                {% if addresses|length > 1 %}
+                    <hr>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card py-3 mt-3 rounded-sm shadow-sm">
+        <div class="card-title px-3">
+            <h3>Order History</h3>
+        </div>
+        <div class="px-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Order Date</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>{{order.order_id}}</td>
+                        <td>{{order.timestamp}}</td>
+                        <td>{{order.total_price}} {{currency.symbol}}</td>
+                        <td>{% if order.status.name == 'Draft' %} Not completed {% else %} {{order.status.name}} {% endif %}</td>
+                        <td><a class="bi bi-info-circle" href="{% url 'order_detail' order.order_id %}"></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row px-3 py-3">
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Logout" class="btn btn-primary rounded-sm"></input>
+        </form>
+    </div>
+<script src="{% static 'js/edit_acc.js' %}"></script>
+{% endblock %}

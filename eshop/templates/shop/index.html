@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid overflow-hidden">
+    {% include 'partials/messages.html' %}
+    <div class="row px-3 py-2 mb-3 justify-content-end">
+        <a href="?sort=l2h" class="btn btn-outline-secondary mr-2 rounded-sm bi bi-sort-up"> Lowest Price</a>
+        <a href="?sort=h2l" class="btn btn-outline-secondary mr-2 rounded-sm bi bi-sort-down"> Highest Price</a>
+    </div>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-3 mb-3">
+                <div class="card py-3 rounded-sm shadow-sm h-100">
+                    <div class="text-center px-3">
+                        <img src="{{product.product_image.url}}" class="img-thumbnail border-0 productImage">
+                    </div>
+                    <div class="card-body d-flex align-items-end">
+                        <div>
+                            <h4 class="card-title"><a href="{% url 'product_detail' product.id %}">{{product.product_name}}</a></h4>
+                            <a class="card-subtitle badge badge-secondary rounded-sm" href="{% url 'category' product.product_category.name %}">{{product.product_category.name}}</a>
+                            <p class="card-text p-y-1 font-weight-bold">{{product.price}} {{product.currency.symbol}}</p>
+                            {% if product.available_amount == 0 %}
+                                <p class="font-weight-bold">Sorry, this product is sold out</p>
+                            {% else %}
+                                <form action="{% url 'add_to_cart' product.id %}" method="post" class="mb-0">
+                                    {% csrf_token %}
+                                    <input type="submit" value="Add to Cart" class="btn btn-success rounded-sm">
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:4 %}
+        </div>
+    <div class="row">
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

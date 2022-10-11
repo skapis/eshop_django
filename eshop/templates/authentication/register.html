@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card mt-5 rounded-lg shadow-sm">
+                <div class="card-body">
+                    <div class="card-title py-3 text-center">
+                        <h4><strong>New Account</strong></h4>
+                    </div>
+                    <form action="{% url 'register' %}" method="post">
+                        {% csrf_token %}
+                        {% include 'partials/messages.html' %}
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" class="form-control rounded-sm" value="{{values.username}}" id="usernameField">
+                        </div>
+                        <div class="invalid_feedback invalid-feedback" style="display:none"></div>
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input type="email" name="email" class="form-control rounded-sm" value="{{values.email}}" id="emailField">
+                        </div>
+                        <div class="emailFeedbackArea invalid-feedback" style="display:none"></div>
+                        <div class="form-group">
+                            <label for="psw">Password</label>
+                            <input type="password" name="psw" class="form-control rounded-sm" id="passwordField">
+                        </div>
+                        <div class="form-group">
+                            <label for="psw_c">Password Again</label>
+                            <input type="password" name="psw_c" id="passwordField2" class="form-control rounded-sm">
+                            <i class="far fa-eye showPasswordToggle float-right py-3"></i>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" name="gtc" class="mx-2 rounded-sm">
+                            <label for="gtc">I accept the <a href="#" >Terms of Use</a></label>
+                        </div>
+                        <input type="submit" value="Register" class="btn btn-block btn-primary rounded-sm register-btn submit-btn">
+                    </form>
+                    <div class="container text-center">
+                        <span>Already a user? <span><a href="{% url 'login' %}">Login</a><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <script src="{% static 'js/register.js' %}"></script>
+{% endblock %}

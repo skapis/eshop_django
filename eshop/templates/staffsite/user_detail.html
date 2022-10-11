@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="row px-3">
+    <a href="{% url 'user_dashboard' %}" class="btn btn-outline-secondary rounded-sm mb-3">Return back</a>
+</div>
+<div class="card rounded-sm shadow-sm">
+    <div class="card-header">
+        <h3>User information</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Username</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{user.username}}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">E-mail</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{user.email}}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">First Name</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{profile.first_name}}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Last Name</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{profile.last_name}}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-3">
+                <p class="mb-0">Birth Date</p>
+            </div>
+            <div class="col-sm-9">
+                <p class="text-muted mb-0">{{profile.date_of_birth}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card py-3 mt-3 rounded-sm shadow-sm">
+    <div class="card-title px-3">
+        <a class="h3 mr-2">Consents</a>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            {% for consent in consents %}
+            <li class="list-group-item border-0">
+                <div class="px-3">
+                    <input disabled type="checkbox" class="form-check-input" checked>
+                    <a>{{consent.name}}</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="card py-3 mt-3 rounded-sm shadow-sm">
+    <div class="card-title px-3">
+        <a class="h3 mr-2">Address</a>
+    </div>
+    <div class="card-body">
+        {% for address in addresses %}
+            <div class="row" id="addressInfo">
+                <div class="col-sm-3">
+                <a class="mb-0">
+                    {% if address.is_primary %}
+                        Primary address
+                    {% else %}
+                        Secondary address
+                    {% endif %}
+                </a>
+                </div>
+                <div class="col-sm-7">
+                    <p class="text-muted mb-0">{{address.street}} {{address.house_no}}, {{address.zipcode}} {{address.city}}, {{address.country.name}}</p>
+                </div>
+            </div>
+            {% if addresses|length > 1 %}
+            <hr>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+<div class="card py-3 mt-3 rounded-sm shadow-sm">
+    <div class="card-title px-3 d-flex">
+        <h3>Orders</h3>
+        <i class="ml-auto bi bi-caret-down-fill align-self-center" data-toggle="collapse" data-target="#orderCollapse" aria-expanded="true" aria-controls="collapseOne"></i>
+    </div>
+    <div class="px-3 collapse show" id="orderCollapse" aria-labelledby="headingOne">
+        {% if orders|length != 0 %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{order.order_id}}</td>
+                    <td>{{order.timestamp}}</td>
+                    <td>{{order.total_price}} {{currency.symbol}}</td>
+                    <td>{% if order.status.name == 'Draft' %} Not completed {% else %} {{order.status.name}} {% endif %}</td>
+                    <td><a class="bi bi-info-circle" href="{% url 'order_detail' order.order_id %}"></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="row justify-content-center">
+            <p class="font-weight-bold">User does not have any order yet.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<div class="card py-3 mt-3 rounded-sm shadow-sm">
+    <div class="card-title px-3 d-flex">
+        <h3>Shop Cart</h3>
+        <i class="ml-auto bi bi-caret-down-fill align-self-center" data-toggle="collapse" data-target="#cartCollapse" aria-expanded="true" aria-controls="collapseOne"></i>
+    </div>
+    <div class="px-3 collapse show" id="cartCollapse" aria-labelledby="headingOne">
+        {% if cart|length != 0 %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Amount</th>
+                    <th>Unit Price</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr>
+                    <td>{{item.product_id.product_name}}</td>
+                    <td>{{item.amount}}</td>
+                    <td>{{item.product_id.price}} {{currency.symbol}}</td>
+                    <td>{{item.total_price}} {{currency.symbol}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="row justify-content-center">
+            <p class="font-weight-bold">User does not have any items in cart now.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% include 'partials/messages.html' %}
+    {% include 'partials/settings_nav.html' %}
+    <div class="card mb-3 rounded-sm">
+        <div class="card-header">
+            <a class="h3 mr-2">Products</a>
+            <a href="{% url 'add_product' %}" class="rounded bi bi-plus-circle h5"></a>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product name</th>
+                        <th>Unit price</th>
+                        <th>Available Amount</th>
+                        <th>Category</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{product.product_name}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.available_amount}}</td>
+                        <td>{{product.product_category.name}}</td>
+                        <td><a href="{% url 'edit_product' product.id %}" class="bi bi-pencil"></a></td>
+                        <td>
+                            <form action="{% url 'hide_product' product.id %}" method="post" class="mb-0">
+                                {% csrf_token %}
+                                {% if product.is_visible %}
+                                    <button class="bi bi-toggle-on border-0 btn btn-lg btn-transition px-0 py-1"></button>
+                                {% else %}
+                                    <button class="bi bi-toggle-off border-0 btn btn-lg btn-transition px-0 py-1"></button>
+                                {% endif %}
+                            </form>
+                        </td>
+                        <td><a href="{% url 'delete_product' product.id %}" class="border-0 btn-transition btn btn-outline-danger bi bi-trash px-3 rounded-sm"></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card mb-3 rounded-sm">
+        <div class="card-header">
+            <h3>Product Categories</h3>
+        </div>
+        <div class="card-body">
+            {% for category in categories %}
+            <li class="list-group item">
+                <div class="card rounded-sm mb-3">
+                    <div class="card-body ml-3">
+                        <div class="row">
+                            <div>
+                                <a class="categoryName" id="catName_{{category.id}}">{{category.name}}</a>
+                                <form action="{% url 'edit_category' category.name %}" method="post" id="editCatForm_{{category.id}}" style="display: none;" class="mb-0">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        <input type="text" name="newName" class="form-control rounded-sm" value="{{category.name}}">
+                                        <button class="border-0 btn-transition btn btn-outline-success fa fa-check px-3 rounded-sm"></button>
+                                    </div>
+                                </form>
+                            </div>
+                            {% if category.name != 'No category' %}
+                            <div class="ml-auto">
+                                <a class="mr-1 border-0 btn-transition btn bi bi-pencil px-3 rounded-sm editCategory" id="{{category.id}}"></a>
+                                <a href="{% url 'delete_category' category.name %}" class="border-0 btn-transition btn btn-outline-danger bi bi-trash px-3 rounded-sm"></a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+            <li class="list-group item">
+                <div class="card rounded-sm mb-3">
+                    <div class="card-body">
+                        <a class="h5 mb-0" id="newCategory"><span class="fa fa-circle-plus mr-2"></span>New category</a>
+                        <form action="{% url 'add_category' %}" method="post" class="mb-0" style="display: none;" id="newCatForm">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input type="text" name="category" class="form-control rounded-sm" placeholder="Category name">
+                                <input type="submit" value="Add" class="btn btn-primary rounded-sm">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </div>
+    </div>
+    <script src="{% static 'js/staff.js' %}"></script>
+{% endblock %}

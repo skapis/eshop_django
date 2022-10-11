@@ -1,0 +1,114 @@
+<html>
+    <head>
+        <style>
+            .orderinfo{
+                border-radius: 5px;
+                padding: 20px;
+                text-align: center;
+            }
+            body{
+                padding: 20px;
+                background-color: #f5f7fb;
+                font-family: Calibri;
+            }
+            .header{
+                padding: 10px;
+                text-align: center;
+            }
+            h3{
+                margin-top: 0;
+            }
+            th{
+                padding: 10px;
+            }
+            td{
+                padding: 10px;
+            }
+            .total, .price, .amount{
+                text-align: center;
+            }
+            .summary{
+                text-align: center;
+            }
+            .products{
+                margin-left: auto;
+                margin-right: auto;
+            }
+            hr{
+                align-self: center;
+                width:100%;
+            }
+            .column-left{
+                float: left;
+                width: 25%;
+            }
+            .column-right{
+                float: right;
+                width: 25%;
+            }
+            .column-center{
+                margin-left: 25%;
+                width: 50%;
+            }
+            .card{
+                border: 1px solid;
+                border-radius: 10px;
+                background-color: #f5f7fb;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="row">
+            <div class="column-left"></div>
+            <div class="column-center card">
+                <div class="header">
+                    <h2>Thank you for your order</h2>
+                    <p>Your order has been confirmed and will be shipped in next two days!</p>
+                    <hr>
+                </div>
+                <div class="orderinfo">
+                    <h3>Order info</h3>
+                    <p><strong>Order ID:</strong> {{order.order_id}}</p>
+                    <p><strong>Date:</strong> {{order.timestamp}}</p>
+                    <p><strong>Payment:</strong> {{order.payment}}</p>
+                    <p><strong>Shipping:</strong> {{order.shipping}}</p>
+                    <p><strong>Address:</strong> {{order.street}} {{order.house_no}}, {{order.zipcode}} {{order.city}}</p>
+                    <hr>
+                    <h3>Ordered products</h3>
+                    <div>
+                        <table class="products">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Amount</th>
+                                    <th>Unit Price</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order_items %}
+                                    <tr>
+                                        <td>{{item.product_name}}</td>
+                                        <td class="amount">{{item.amount}}</td>
+                                        <td class="price">{{item.price}} {{currency.symbol}}</td>
+                                        <td class="total">{{item.total_price}} {{currency.symbol}}</td>
+                                    </tr>
+                                {% endfor %}
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr>
+                    <div class="summary">
+                        <p>Payment Price: {{order.payment_price}} {{currency.symbol}}</p>
+                        <p>Shipping Price: {{order.shipping_price}} {{currency.symbol}}</p>
+                        <h3>Order Total: {{order.total_price}} {{currency.symbol}}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="column-right"></div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,50 @@
+.bi-basket2-fill{
+    color: inherit;
+}
+
+.user_profile{
+    color: black !important;
+    font-weight: 400;
+}
+
+.user_profile:hover{
+    text-decoration: none;
+}
+
+.qty_input{
+    width: 70px;
+}
+
+.editAddress:hover{
+    cursor: pointer;
+}
+
+#edit_acc:hover{
+    cursor: pointer;
+}
+
+.bi-x:hover{
+    cursor: pointer;
+}
+
+.bi-pencil{
+    cursor: pointer;
+}
+
+#newCategory:hover{
+    cursor: pointer;
+}
+
+.bi-caret-down-fill{
+    cursor: pointer;
+}
+
+
+.bi-plus-circle:hover{
+    cursor: pointer;
+}
+
+.productImage{
+    max-height: 300;
+    background-size: 100% auto;
+}

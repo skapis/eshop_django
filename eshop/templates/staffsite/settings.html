@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'partials/messages.html' %}
+{% include 'partials/settings_nav.html' %}
+<div class="row">
+    <div class="col">
+        <div class="card mb-3 rounded-sm">
+            <div class="card-header">
+                <a class="h3 mr-2">Payment Methods</a>
+                <a data-toggle="modal" data-target="#addPaymentModal" class="rounded bi bi-plus-circle h5"></a>
+                {% include 'staffsite/modals/add_payment.html' %}
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment in payments %}
+                        <tr>
+                            <td>{{payment.name}}</td>
+                            <td>{{payment.price}} {{currency.symbol}}</td>
+                            <td><a data-toggle="modal" data-target="#{{payment.name}}" class="mr-1 border-0 btn-transition btn bi bi-pencil px-3 rounded-sm"></a></td>
+                            {% include 'staffsite/modals/edit_payment.html' with payment=payment %}
+                            <td><a href="{% url 'delete_payment' payment.id %}" class="border-0 btn-transition btn btn-outline-danger bi bi-trash px-3 rounded-sm"></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card mb-3 rounded-sm">
+            <div class="card-header">
+                <a class="h3 mr-2">Shipping</a>
+                <a data-toggle="modal" data-target="#addShippingModal" class="rounded bi bi-plus-circle h5"></a>
+                {% include 'staffsite/modals/add_shipping.html' %}
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Duration (in days)</th>
+                            <th>Company</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for shipping in shippings %}
+                        <tr>
+                            <td>{{shipping.name}}</td>
+                            <td>{{shipping.price}} {{currency.symbol}}</td>
+                            <td>{{shipping.duration}}</td>
+                            <td>{{shipping.company}}</td>
+                            <td><a data-toggle="modal" data-target="#{{shipping.name}}" class="mr-1 border-0 btn-transition btn bi bi-pencil px-3 rounded-sm"></a></td>
+                            {% include 'staffsite/modals/edit_shipping.html' with shipping=shipping %}
+                            <td><a href="{% url 'delete_shipping' shipping.id %}" class="border-0 btn-transition btn btn-outline-danger bi bi-trash px-3 rounded-sm"></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card rounded-sm shadow-sm">
+            <div class="card-header">
+                <a class="h3 mr-2">Countries</a>
+                <a data-toggle="modal" data-target="#addCountry" class="rounded bi bi-plus-circle h5"></a>
+                {% include 'staffsite/modals/add_country.html' with countries=countries %}
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for country in countries %}
+                        <li class="list-group-item">
+                            <div class="row d-flex px-3">
+                                <div>
+                                    <a>{{country.name}} ({{country.code}})</a>
+                                </div>
+                                <div class="ml-auto">
+                                    <a href="{% url 'delete_country' country.code %}" class="border-0 btn-transition btn btn-outline-danger bi bi-trash px-3 rounded-sm"></a>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card rounded-sm shadow-sm">
+            <div class="card-header">
+                <a class="h3 mr-2">Currencies</a>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for currency in currencies %}
+                        <li class="list-group-item">
+                            <div class="row d-flex px-3">
+                                <div class="px-3">
+                                    {% if currency.used %}
+                                    <input checked disabled type="checkbox" class="form-check-input">
+                                    {% else%}
+                                        <input disabled type="checkbox" class="form-check-input">
+                                    {% endif %}
+                                    <a>{{currency.name}}</a>
+                                </div>
+                                {% if not currency.used %}
+                                    <div class="ml-auto">
+                                        <a href="{% url 'change_currency' currency.code %}" class="btn btn-sm btn-outline-primary rounded-sm">Set as primary</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/settings.js' %}"></script>
+{% endblock %}

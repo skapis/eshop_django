@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'partials/settings_nav.html' %}
+<div class="row mb-3">
+    <div class="col">
+        <div class="card shadow-sm rounded-sm">
+            <div class="card-title pt-3 text-center">
+                <h4>Total orders</h4>
+            </div>
+            <div class="card-body text-center">
+                <h3 class="">{{total_orders}}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow-sm rounded-sm">
+            <div class="card-title pt-3 text-center">
+                <h4>Completed orders</h4>
+            </div>
+            <div class="card-body text-center">
+                <h3 class="">{{completed}}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow-sm rounded-sm">
+            <div class="card-title pt-3 text-center">
+                <h4>Not completed orders</h4>
+            </div>
+            <div class="card-body text-center">
+                <h3 class="">{{not_complete}}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow-sm rounded-sm">
+            <div class="card-title pt-3 text-center">
+                <h4>Cancelled orders</h4>
+            </div>
+            <div class="card-body text-center">
+                <h3 class="">{{cancelled}}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mb-3 rounded-sm">
+    <div class="card-header">
+        <a class="h3 mr-2">Orders</a>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>E-mail</th>
+                    <th>Order Date</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th>Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{order.order_id}}</td>
+                    <td>{{order.email}}</td>
+                    <td>{{order.timestamp}}</td>
+                    <td>{{order.total_price}}</td>
+                    <td>{% if order.status.name == 'Draft' %} Not completed {% else %} {{order.status.name}} {% endif %}</td>
+                    <td><a class="bi bi-info-circle" href="{% url 'order_detail' order.order_id %}"></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'partials/messages.html' %}
+<div class="row px-3">
+    <a href="{% url 'product_dashboard' %}" class="btn btn-outline-secondary rounded-sm mb-3">Return back</a>
+</div>
+<div class="card rounded-sm shadow-sm">
+    <div class="card-header">
+        <h3>New Product</h3>
+    </div>
+    <div class="card-body">
+        <form action="{% url 'add_product' %}" method="post" class="mb-0" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="productName">Product Name *</label>
+                <input type="text" name="productName" class="form-control rounded-sm" value="{{values.productName}}">
+            </div>
+            <div class="form-group">
+                <label for="productInfo">Product Description *</label>
+                <textarea name="productInfo" rows="5" class="form-control rounded-sm">{{values.productInfo}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="amount">Available amount *</label>
+                <input type="number" min="1" name="availableAmount" class="form-control rounded-sm" value="{{values.availableAmount}}">
+            </div>
+            <div class="form-group">
+                <label for="price">Price *</label>
+                <input type="number" name="price" min="1" class="form-control rounded-sm" value="{{values.price}}">
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select name="category" class="form-control rounded-sm">
+                    {% for category in categories %}
+                        <option value="{{category.id}}">{{category.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="image" class="form-label">Product Image *</label>
+                <input type="file" name="productImage" class="form-control-file" accept=".jpg, .jpeg, .png">
+            </div>
+            <input type="submit" value="Add Product" class="btn btn-primary rounded-sm">
+        </form>
+    </div>
+</div>
+{% endblock %}

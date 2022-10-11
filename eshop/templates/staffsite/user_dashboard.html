@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'partials/settings_nav.html' %}
+<div class="row mb-3">
+    <div class="col">
+        <div class="card shadow-sm rounded-sm">
+            <div class="card-title pt-3 text-center">
+                <h4>Total users</h4>
+            </div>
+            <div class="card-body text-center">
+                <h3 class="">{{user_count}}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow-sm rounded-sm">
+            <div class="card-title pt-3 text-center">
+                <h4>User with order</h4>
+            </div>
+            <div class="card-body text-center">
+                <h3 class="">{{userWithOrder}}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow-sm rounded-sm">
+            <div class="card-title pt-3 text-center">
+                <h4>Users without order</h4>
+            </div>
+            <div class="card-body text-center">
+                <h3 class="">{{userWithoutOrder}}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mb-3 rounded-sm">
+    <div class="card-header">
+        <a class="h3 mr-2">Users</a>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>E-mail</th>
+                    <th>Account created</th>
+                    <th>Staff</th>
+                    <th>Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{user.username}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.date_joined}}</td>
+                    <td>{% if user.is_staff %} Yes {% endif %}</td>
+                    <td><a href="{% url 'user_detail' user.id %}" class="bi bi-info-circle"></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

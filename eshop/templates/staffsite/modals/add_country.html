@@ -1,0 +1,27 @@
+{% load static %}
+{% block content %}
+<div class="modal fade" id="addCountry" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content rounded-lg">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Shipping Method</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{% url 'add_country' %}" method="post">
+            <div class="modal-body">
+                <select name="newCountry" class="form-control rounded-sm mr-2">
+                    {% for c in country_list %}
+                        <option value="{{c.code}}">{{c.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary rounded-sm" value="Add">
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

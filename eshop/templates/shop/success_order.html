@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container text-center">
+    <h1 class="bi bi-check-circle"></h1>
+    <h1>Success! We have received your order, we will inform you, when it will be ready to deliver</h1>
+    <a href="{% url 'home'%}" class="btn btn-primary rounded-sm mt-3">Back to Home Page</a>
+</div>
+{% endblock %}

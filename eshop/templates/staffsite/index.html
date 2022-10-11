@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% include 'partials/messages.html' %}
+    {% include 'partials/settings_nav.html' %}
+    <div class="row" id="card-row">
+        <div class="col-3">
+            <div class="card flex-fill w-100 rounded-lg shadow-sm mb-3">
+                <div class="card-header bg-transparent border-0">
+                    <h5 class="card-title text-center mb-0">Total Sales</h5>
+                </div>
+                <div class="card-body py-3 flex-fill">
+                    <div class="row align-items-center mb-2 text-center">
+                        <div class="col-12">
+                            <a class="h3" id="totalSales">0</a><a class="h3"> {{currency.symbol}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card w-100 rounded-lg shadow-sm mb-3">
+                <div class="card-header bg-transparent">
+                    <h5 class="card-title mb-0">Sales ({{currency.symbol}}) by date</h5>
+                </div>
+                <div class="card-body py-3">
+                    <canvas class="chart chart-sm" id="salesByDate"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row row-eq-height">
+        <div class="col-md-6">
+            <div class="card w-100 rounded-lg shadow-sm mb-3">
+                <div class="card-header bg-transparent">
+                    <h5 class="card-title mb-0">Sales ({{currency.symbol}}) by category</h5>
+                </div>
+                <div class="card-body py-3">
+                    <canvas class="chart" id="SalesByCategory" max-width="400" max-height="400"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card w-100 rounded-lg shadow-sm mb-3">
+                <div class="card-header bg-transparent">
+                    <h5 class="card-title mb-0">Sales ({{currency.symbol}}) by Product</h5>
+                </div>
+                <div class="card-body py-3">
+                    <canvas class="chart" id="SalesByProduct" max-width="400" max-height="400"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/main_dashboard.js' %}"></script>
+{% endblock %}
