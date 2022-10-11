@@ -146,8 +146,8 @@ MESSAGE_TAGS = {
 }
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'jakub.skapik@gmail.com'
+EMAIL_HOST_USER = 'email@example.com'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'jakub.skapik@gmail.com'
+DEFAULT_FROM_EMAIL = 'email@example.com'
 EMAIL_PORT = 587
-EMAIL_HOST_PASSWORD = 'rupaeqeavduulgkr'
+EMAIL_HOST_PASSWORD = 'xxxx'
