@@ -1,5 +1,5 @@
 # Eshop site
-In this repository is site with eshop site, which is developed in Django framework. 
+In this repository is site with eshop, which is developed in Django framework. 
 
 # Database
 
