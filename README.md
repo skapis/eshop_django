@@ -1,11 +1,26 @@
-# Eshop site
-In this repository is site with eshop, which is developed in Django framework. 
+# 🛒 Eshop Django App
 
-# Database
+An e-commerce website developed using the **Django** framework.
 
-The database for this application is PostgreSQL. In the repository is the example of the database. You need to restore this database to use it.
+## 📦 Features
 
-Superuser<br>
-login = admin<br>
-password = Demo123
+- Product management
+- User authentication (login, logout)
+- Shopping cart functionality
+- PostgreSQL database integration
+- Admin interface for managing products
 
+## 🗄 Database
+
+This project uses **PostgreSQL**.
+
+A sample database dump (`eshop_db.sql`) is included in the repository.  
+To set it up:
+
+1. Create a new PostgreSQL database.
+2. Restore the `eshop_db.sql` into your database.
+
+Default superuser credentials:
+
+Username: admin
+Password: Demo123
